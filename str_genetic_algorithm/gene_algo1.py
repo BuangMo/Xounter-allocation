@@ -1,4 +1,5 @@
 import random
+import time
 
 class GENETIC_ALGORITHM():
     def __init__(self, pop_size, target):
@@ -52,7 +53,7 @@ def main():
     generation = 0
     
     obj = GENETIC_ALGORITHM(population_size, target_str)            # creates an instance of the class
-    
+    start = time.time()
     # creates an initial population
     population = obj.initialPopulation()
     
@@ -77,8 +78,9 @@ def main():
         population = new_population
         print(f"Generation {generation}: Str = {population[0]}, Fitness: {org_fitness[0]}")
         generation += 1
-        
+       
+    stop = time.time()
     print(f"Generation {generation}: Str = {population[0]}, Fitness: {org_fitness[0]}")
-    
+    print(f"\ntime: {stop - start} s")
 if __name__ == '__main__': 
 	main()
