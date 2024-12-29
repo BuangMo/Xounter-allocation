@@ -63,7 +63,7 @@ class TSP_GENETIC_ALGORITHM():
                 continue
             except (ValueError):                                                # provided the value is non-existing in offspring
                 x = par2.index(offspring[i])                                    # find the index in parent 2 where the offspring element is
-                if x >= point_sel:                                              # if that element exists at a value above point_sel then assign it to offspring
+                if x >= point_sel and offspring[x] == None:                     # if that element exists at a value above point_sel then assign it to offspring
                     offspring[x] = par2[i]
                 else:                                                           # if the element at index x of parent 2 is located at some index below point_sel
                     while True:
@@ -76,6 +76,9 @@ class TSP_GENETIC_ALGORITHM():
         for j in range(point_sel, self.num_locations):
             if offspring[j] == None:
                 offspring[j] = par2[j]
+        
+        # introduces diverity to the offspring        
+        offspring = self.__mutation(offspring)
                 
         return offspring
     
@@ -95,7 +98,7 @@ class TSP_GENETIC_ALGORITHM():
                 continue
             except(ValueError):
                 x = par2.index(offspring[i])                                    # find the index in parent 2 where the offspring element is
-                if x >= point_sel1 or x <= point_sel0:                          # if that element exists at a value outside the selection points then assign it to offspring
+                if x >= point_sel1 or x <= point_sel0 and offspring[x] == None:                          # if that element exists at a value outside the selection points then assign it to offspring
                     offspring[x] = par2[i]
                 else:                                                           # if the element at index x of parent 2 is located at some index inside the selection points
                     while True:
@@ -105,14 +108,17 @@ class TSP_GENETIC_ALGORITHM():
                             break
         
         # copies the genetic material of parent 2 outside the selection points
-        locs = [num for num in range(self.num_locations) if num < point_sel0 or num > point_sel1]
+        locs = [num for num in range(self.num_locations) if num < point_sel0 or num >= point_sel1]
         for j in locs:
             if offspring[j] == None:
                 offspring[j] = par2[j]
         
+        # introduces diverity to the offspring        
+        offspring = self.__mutation(offspring)
+        
         return offspring
     
-    def mutation(self, child_dna):
+    def __mutation(self, child_dna):
         '''Introduces diversity onto the child by making random changes to the DNA'''
         prob = 1.0 - self.mutation_rate
         for i in range(self.num_locations):
@@ -129,32 +135,3 @@ class TSP_GENETIC_ALGORITHM():
                 
         return child_dna
                     
-def main():
-    coord = ['D', 'J', 'F', 'E', 'C', 'B', 'I', 'H', 'G']
-    coord1 = ['E', 'G', 'H', 'I', 'B', 'F', 'C', 'D', 'J']
-    pop_size = 5
-    mut_rate = 0.04                                                 # can be 2-5%
-    
-    obj = TSP_GENETIC_ALGORITHM(coord, pop_size, mut_rate)
-    #population = obj.initialPopulation()
-    
-    offs = obj.crossover2Point(coord, coord1)
-    print(offs)
-    
-    '''for individual in popu:
-        print(individual)'''
-        
-    '''while True:
-        # sorts the population in ascending order using the fitness of individuals
-        org_fitness = [obj.evalFitness(x) for x in population]      # gets the fitness of each individual
-        res = zip(org_fitness, population)                          # combines the two lists into a single iterable
-        res = sorted(res, key=lambda result:result[0])              # sorts the iterable using fitness of individuals
-        org_fitness, population = zip(*res)                         # extracts the population that was sorted using the fitness
-            
-        # break from the loop if the target has been found
-        if org_fitness[0] == 0:
-            break'''
-        
-        
-if __name__ == '__main__': 
-	main()
