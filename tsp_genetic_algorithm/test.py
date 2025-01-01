@@ -45,14 +45,14 @@ def main():
         for _ in range(x):
             parent1 = random.choice(population[:int(population_size/2)])
             parent2 = random.choice(population[:int(population_size/2)])
-            offspring = obj.crossover1Point(parent1, parent2)
+            offspring = obj.crossover2Point(parent1, parent2)
             new_population.append(offspring)
             
         population = new_population
         print(f"Generation {generation}: Str = {population[0]}, Fitness: {org_fitness[0]}")
         generation += 1
         
-        plot_fittest(population[0])
+        plot_fittest(population[0], coord)
         plot_distance.append(org_fitness[0])
         total_distance += org_fitness[0]
         mean_distance = total_distance / generation

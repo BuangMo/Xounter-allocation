@@ -5,36 +5,44 @@ plt.ion()
 
 def plot(distance, mean_distance):
     fig1 = plt.figure(1)
-    ax1 = fig1.add_subplot(111)
+    fig1.add_subplot(111)
     display.clear_output(wait=True)
     display.display(plt.gcf())
     plt.clf()
-    ax1.set_title('Best Distance')
-    ax1.set_xlabel('Number of Generations')
-    ax1.set_ylabel('Distance')
-    ax1.plot(distance)
-    ax1.plot(mean_distance)
+    plt.title('Best Distance')
+    plt.ylabel('Number of Generations')
+    plt.ylabel('Distance')
+    plt.plot(distance)
+    plt.plot(mean_distance)
     plt.ylim(ymin=0)
     plt.text(len(distance)-1, distance[-1], str(distance[-1]))
     plt.text(len(mean_distance)-1, mean_distance[-1], str(mean_distance[-1]))
-    plt.show()
+    plt.show(block=False)
     plt.pause(1)
     
-def plot_fittest(coord):
+def plot_fittest(coord, original_set):
     coord.append(coord[0])
+    labels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
     
-    fig2 = plt.figure(2)
-    ax2 = fig2.add_subplot(111)
+    plt.figure(2)
     
     display.clear_output(wait=True)
     display.display(plt.gcf())
     plt.clf()
-    ax2.set_title('Fittest Individual')
-    plt.set_xlabel('X')
-    plt.set_ylabel('Y')
+    plt.title('Fittest Individual')
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    
+    for i in range(len(original_set)):
+        x = original_set[i][0]
+        y = original_set[i][1]
+        plt.annotate(labels[i], (x, y))
+    
     for i in range(1, len(coord)):
         tmp = coord[i-1]
-        ax2.plot([coord[i][0], tmp[0]], [coord[i][1], tmp[1]], 'or-')
+        x = [coord[i][0], tmp[0]]
+        y = [coord[i][1], tmp[1]]
+        plt.plot(x, y, 'or-')
+        
     plt.ylim(ymin=0)
-    plt.show()
-    plt.pause(1)
+    plt.show(block=False)
